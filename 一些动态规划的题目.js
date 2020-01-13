@@ -2,13 +2,13 @@
 // 70.爬楼梯
 //使用一个状态量db来记录所有状态的值，可以避免重复计算。
 var climbStairs = function (n) {
-  const db = [];
-  db[0] = 1;
-  db[1] = 2;
+  const dp = [];
+  dp[0] = 1;
+  dp[1] = 2;
   for (let i = 2; i < n; i++) {
-    db[i] = db[i - 1] + db[i - 2];
+    dp[i] = dp[i - 1] + dp[i - 2];
   }
-  return db[n - 1];
+  return dp[n - 1];
 };
 
 //121.买卖股票的最佳时机
@@ -32,14 +32,14 @@ var maxProfit = function (prices) {
   if (prices.length === 0) {
     return 0;
   } else {
-    let db = Array.from(new Array(prices.length), () => new Array(2));
-    db[0][0] = 0;
-    db[0][1] = -prices[0];
+    let dp = Array.from(new Array(prices.length), () => new Array(2));
+    dp[0][0] = 0;
+    dp[0][1] = -prices[0];
     for (let i = 1; i < prices.length; i++) {
-      db[i][0] = Math.max(db[i - 1][0], db[i - 1][1] + prices[i]);
-      db[i][1] = Math.max(db[i - 1][1], - prices[i]);
+      dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+      dp[i][1] = Math.max(dp[i - 1][1], - prices[i]);
     }
-    return db[prices.length - 1][0];
+    return dp[prices.length - 1][0];
   }
 };
 //二维数组中有很多地方并没有用到，这个程序可以优化
