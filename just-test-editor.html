@@ -1,0 +1,182 @@
+<script>
+  var a = 1
+  if(true){
+    function a(){
+
+    }
+    console.log("one",a)
+    a = 22
+    console.log("two",a)
+  }
+  console.log("three",a)
+
+
+
+let xhr = new XMLHttpRequest()
+xhr.open('GET','https://xieranmaya.github.io/images/cats/cats.json')
+xhr.send()
+let cats = Array.from(JSON.parse(xhr.responseText))
+
+let i = 0
+
+function foo() {
+  get2Img(cats[i++].fullUrl,cats[i++].fullUrl,(img1,img2) => {
+  document.body.append(img1)
+  document.body.append(img2)
+  if(i < cats.length){
+    foo ()
+    }
+  })
+}
+
+
+function get2Img(url1, url2, cb){
+  let c = 0
+  let img1,img2
+  getImg(url1,img => {
+    img1 = img
+    c++
+    if(c == 2){
+      cb(img1,img2)
+    }
+  })
+  getImg(url2,img => {
+    img2 = img
+    c++
+    if(c == 2){
+      cb(img1, img2)
+    }
+  })
+}
+
+function getImg(url, cb) {
+  let img = document.createElement('img')
+  img.onload = function() {
+    cb(img)
+  }
+  img.src = url
+}
+
+
+xhr.onload = function() {
+  let cats = Array.from(JSON.parse(xhr.responseText))
+  let i = 0
+
+  function one(){
+    getImg(cats[i++].fullUrl,(img)=>{
+      document.body.appendChild(img)
+      if(i < cats.length){
+        one()
+      }
+    })
+  }
+
+  for(let i = 0; i < 3; i++){
+    one()
+  }
+}
+
+
+function parallel(tasks, cb){
+  let compeleted = 0
+  for(let i = 0; i < tasks.length; i++){
+    let task = tasks[i]
+    task(() => {
+      compeleted++
+      if(compeleted == tasks.length){
+        cb()
+      }
+    })
+  }
+}
+
+//怎样实现一个一个出现
+function series(tasks, cb){
+  let i = 0
+  let compeleted = 0
+
+  function startOne(){
+    if(i < tasks.length ){
+      tasks[i++](() => {
+        startOne()
+      })
+    }
+
+  }
+}
+
+
+//一次出现limit个
+
+function seriesLimit(tasks, cb){
+  let i = 0
+  let compeleted = 0
+
+  for(let i = 0; i < limit;i++){
+    one()
+  }
+
+  function one(){
+    if(i < tasks.length){
+      tasks[i++](() => {
+        compeleted++
+        if(compeleted == tasks.length){
+          cb()
+        }else{
+          one()
+        }
+
+      })
+    }
+  }
+}
+
+
+
+function asyncMap(ary, mapper, cb){
+  let res = []
+  let count = 0
+  for(let i = 0; i < ary.length; i++){
+      mapper(ary[i], function(err, value){
+      res[i] = value
+      count++
+      if(count == ary.length){
+        cb(null,res)
+      }
+    })
+  }
+}
+
+asyncMap([1,2,3,4],
+function mapper(it,cb) {
+  setTimeout(() => {
+    cb(null, it*it)
+  })
+},
+function(err,mapped){
+  console.log(mapped)
+}
+)
+
+
+function asyncFilter(ary,test,cb){
+  let res = new Array(ary.length).fill(false)
+  let count = 0
+  for(let i = 0; i < ary.length; i++){
+    test(ary[i], (err, pass) => {
+      if(pass) {
+        res[i] = true
+      }
+      count++
+      if(count == ary.length){
+        let filted = ary.filter((_,idx) => {
+          return res[idx]
+        })
+        cb(null,filted)
+      }
+    })
+  }
+}
+
+
+</script>
