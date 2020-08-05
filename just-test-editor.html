@@ -179,4 +179,13 @@ function asyncFilter(ary,test,cb){
 }
 
 
+//jquery版本的异步
+for(let i = 0 ; i < cats.length; i++){
+  a  =  a.queue(done => {
+    getImg(cats[i].fullUrl, img => {
+      document.body.appendChild(img)
+      done()
+    })
+  })
+}
 </script>
