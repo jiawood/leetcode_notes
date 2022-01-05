@@ -22,3 +22,31 @@ var lastRemaining = function(n) {
   }
   return arr[0]
 };
+
+// 看了别人的规律，一个式子写的就是看不懂，直接模拟删除的过程很好理解
+/**
+ * @param {number} n
+ * @return {number}
+ */
+// 不断模拟
+// 如果从左往右删，first = first + step
+// 如果从右往左，cnt 为奇数 first = first + step
+var lastRemaining = function(n) {
+    let first = 1 
+    let step = 1 
+    let cnt = n 
+    let flag = 1
+    while(cnt > 1){
+        if(flag){
+            first += step
+        }else{
+            if(cnt % 2 === 1){
+                first += step
+            }
+        }
+        step *= 2 
+        cnt = cnt / 2 | 0
+        flag ^= 1
+    }
+    return first
+};
