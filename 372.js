@@ -24,3 +24,23 @@ function pow(a,b) {
         return pow(a * a % 1337, b / 2)
     }
 }
+
+// 很离谱，使用Math.pow 当数值很大的时候，会不准确
+// 超出数据范围
+
+// 有一个巧妙的方式，使用bigInt，使数据不超出
+/**
+ * @param {number} a
+ * @param {number[]} b
+ * @return {number}
+ */
+ var superPow = function(a, b) {
+    let s = 1n
+    a = BigInt(a)
+    for(let i of b){
+        s = s ** 10n
+        s = s * a ** BigInt(i)
+        s = s % 1337n
+    }
+    return s 
+};
