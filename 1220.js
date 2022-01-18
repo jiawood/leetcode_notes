@@ -43,3 +43,33 @@ var countVowelPermutation = function(n) {
   return res
 
 };
+
+
+// 动态规划
+/**
+ * @param {number} n
+ * @return {number}
+ */
+const MOD = 10 ** 9 + 7
+var countVowelPermutation = function(n) {
+    let a = 1 
+    let e = 1 
+    let i = 1 
+    let o = 1
+    let u = 1 
+    let na,ne,ni,no,nu 
+    while(--n){
+        na = (((e + i) % MOD) + u) % MOD
+        ne = (a + i) % MOD 
+        ni = (e + o) % MOD
+        no = i 
+        nu = (o + i) % MOD 
+        a = na 
+        e = ne 
+        i = ni 
+        o = no 
+        u = nu 
+    }
+    return ((((((a + e) % MOD + i)% MOD) + o) % MOD) + u) % MOD 
+
+};
